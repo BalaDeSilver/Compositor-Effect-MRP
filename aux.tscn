@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://byx82vtsmcpbn"]
+
+[ext_resource type="Script" uid="uid://by431x7sbt4ie" path="res://aux.gd" id="1_r8r5m"]
+[ext_resource type="Script" uid="uid://dnwfwvasxgqcy" path="res://aux_effect.gd" id="2_2ymae"]
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_2ymae"]
+resource_local_to_scene = true
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_2ymae")
+metadata/_custom_type_script = "uid://dnwfwvasxgqcy"
+
+[sub_resource type="Compositor" id="Compositor_2ymae"]
+resource_local_to_scene = true
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_2ymae")])
+
+[node name="SubViewport" type="SubViewport" unique_id=76259078]
+process_mode = 3
+transparent_bg = true
+handle_input_locally = false
+render_target_clear_mode = 1
+render_target_update_mode = 4
+script = ExtResource("1_r8r5m")
+
+[node name="AuxCamera" type="Camera3D" parent="." unique_id=2012720284]
+process_mode = 3
+cull_mask = 2
+compositor = SubResource("Compositor_2ymae")
+current = true

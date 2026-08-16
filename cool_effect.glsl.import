@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://cby0wcobg0wmd"
+path="res://.godot/imported/cool_effect.glsl-89a683458abe718684fe52bfa593e84c.res"
+
+[deps]
+
+source_file="res://cool_effect.glsl"
+dest_files=["res://.godot/imported/cool_effect.glsl-89a683458abe718684fe52bfa593e84c.res"]
+
+[params]
+
