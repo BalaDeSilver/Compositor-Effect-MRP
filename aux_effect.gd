@@ -65,6 +65,6 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 	for view in scene_buffers.get_view_count():
 		var aux: RID = scene_buffers.get_color_layer(view)
 		var depth: RID = scene_buffers.get_depth_layer(view)
-		var size = scene_buffers.get_internal_size()
+		
 		main_shader_ref.mask_tex[number][view] = aux
 		main_shader_ref.depth_tex[number][view] = depth

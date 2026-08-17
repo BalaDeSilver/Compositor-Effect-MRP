@@ -81,7 +81,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.0765095)
 current = true
 
 [node name="Icosphere" type="MeshInstance3D" parent="." unique_id=1685822941]
-transform = Transform3D(-0.71637386, 0.6972197, -0.026323536, -0.029337907, 0.0075937794, 0.9995407, 0.6970993, 0.7168172, 0.015014984, 0, 0, 0)
+transform = Transform3D(0.48245823, 0.12733132, 0.8666144, -0.82596534, -0.26320633, 0.49850115, 0.29157323, -0.95629966, -0.021814821, 0, 0, 0)
 layers = 3
 mesh = SubResource("ArrayMesh_41vdm")
 

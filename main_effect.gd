@@ -18,12 +18,31 @@ var mask_tex: Array[Array]
 var depth_tex: Array[Array]
 var prev_tex: Array[Array]
 
-var hash_array: Array[StringName] = ["One", "Two", "Three", "Four"]
+var hash_array: Array[StringName] = [&"One", &"Two", &"Three", &"Four"]
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE and shader:
 		if shader.is_valid():
 			RenderingServer.free_rid(shader)
+			
+			for array in mask_tex:
+				for texture in array:
+					RenderingServer.free_rid(texture)
+			mask_tex.clear()
+			
+			for array in depth_tex:
+				for texture in array:
+					RenderingServer.free_rid(texture)
+			depth_tex.clear()
+			
+			for array in prev_tex:
+				for texture in array:
+					RenderingServer.free_rid(texture)
+			prev_tex.clear()
+			
+			for viewport in aux_viewports:
+				viewport.queue_free()
+			aux_viewports.clear()
 
 
 func initialize_cs() -> void:
@@ -36,8 +55,6 @@ func initialize_cs() -> void:
 		scene_root = EditorInterface.get_edited_scene_root()
 	else:
 		scene_root = Engine.get_main_loop().current_scene
-	
-	#if compositor.compositor_effects.size() > 0:
 	
 	rd = RenderingServer.get_rendering_device()
 	if not rd:
