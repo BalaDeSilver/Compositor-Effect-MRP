@@ -40,8 +40,6 @@ func _notification(what: int) -> void:
 					RenderingServer.free_rid(texture)
 			prev_tex.clear()
 			
-			for viewport in aux_viewports:
-				viewport.queue_free()
 			aux_viewports.clear()
 
 

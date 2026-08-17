@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://cnnppidj4nkhl"]
 
+[ext_resource type="Script" uid="uid://dcdqpw2amf3yq" path="res://main_effect.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://sqw6hhpmr2hi" path="res://colorgrid.png" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://dcdqpw2amf3yq" path="res://main_effect.gd" id="1_lquwl"]
 [ext_resource type="Script" uid="uid://riwxxevhrn8l" path="res://main.gd" id="2_h2yge"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7dm0k"]
@@ -16,18 +16,18 @@ background_mode = 2
 sky = SubResource("Sky_ig7tw")
 glow_enabled = true
 
-[sub_resource type="CompositorEffect" id="CompositorEffect_xh8x3"]
+[sub_resource type="CompositorEffect" id="CompositorEffect_40tix"]
 resource_local_to_scene = false
 resource_name = ""
 enabled = true
 effect_callback_type = 4
 needs_motion_vectors = true
 needs_normal_roughness = false
-script = ExtResource("1_lquwl")
+script = ExtResource("1_h2yge")
 metadata/_custom_type_script = "uid://dcdqpw2amf3yq"
 
 [sub_resource type="Compositor" id="Compositor_6n3tf"]
-compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_xh8x3")])
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_40tix")])
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_24m5n"]
 
@@ -81,7 +81,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.0765095)
 current = true
 
 [node name="Icosphere" type="MeshInstance3D" parent="." unique_id=1685822941]
-transform = Transform3D(0.48245823, 0.12733132, 0.8666144, -0.82596534, -0.26320633, 0.49850115, 0.29157323, -0.95629966, -0.021814821, 0, 0, 0)
+transform = Transform3D(-0.9766096, -0.21238671, 0.033543047, -0.11969212, 0.40738583, -0.9053786, 0.17862543, -0.88821644, -0.423278, 0, 0, 0)
 layers = 3
 mesh = SubResource("ArrayMesh_41vdm")
 
