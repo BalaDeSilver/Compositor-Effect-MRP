@@ -171,6 +171,7 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		for view in view_count:
 			var screentex: RID = scene_buffers.get_color_layer(view)
 			var motiontex: RID = scene_buffers.get_velocity_layer(view)
+			var depthex: RID = scene_buffers.get_depth_layer(view)
 			
 			var render_target: RID = render_data.get_render_scene_buffers().get_render_target()
 			for index in range(4):
@@ -222,8 +223,14 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 			uniform_motion.binding = 4
 			uniform_motion.add_id(motiontex)
 			
+			var uniform_depth: RDUniform = RDUniform.new()
+			uniform_depth.uniform_type = RenderingDevice.UNIFORM_TYPE_SAMPLER_WITH_TEXTURE
+			uniform_depth.binding = 5
+			uniform_depth.add_id(nearest_sampler)
+			uniform_depth.add_id(depthex)
+			
 			var image_uniform_set: RID
-			image_uniform_set = UniformSetCacheRD.get_cache(shader, 0, [uniform_screen, uniform_mask, uniform_maskdepth, uniform_prev, uniform_motion])
+			image_uniform_set = UniformSetCacheRD.get_cache(shader, 0, [uniform_screen, uniform_mask, uniform_maskdepth, uniform_prev, uniform_motion, uniform_depth])
 			
 			var compute_list: int = rd.compute_list_begin()
 			
