@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://cnnppidj4nkhl"]
 
 [ext_resource type="Texture2D" uid="uid://sqw6hhpmr2hi" path="res://colorgrid.png" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://dcdqpw2amf3yq" path="res://main_effect.gd" id="1_lquwl"]
 [ext_resource type="Script" uid="uid://riwxxevhrn8l" path="res://main.gd" id="2_h2yge"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7dm0k"]
@@ -15,7 +16,18 @@ background_mode = 2
 sky = SubResource("Sky_ig7tw")
 glow_enabled = true
 
+[sub_resource type="CompositorEffect" id="CompositorEffect_g1uo8"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = true
+needs_normal_roughness = false
+script = ExtResource("1_lquwl")
+metadata/_custom_type_script = "uid://dcdqpw2amf3yq"
+
 [sub_resource type="Compositor" id="Compositor_6n3tf"]
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_g1uo8")])
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_24m5n"]
 
@@ -59,6 +71,8 @@ material = SubResource("StandardMaterial3D_40rcy")
 flip_faces = true
 size = Vector3(20, 20, 20)
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_6n3tf"]
+
 [node name="WorldEnvironment" type="WorldEnvironment" unique_id=2073219255]
 environment = SubResource("Environment_0xm2m")
 compositor = SubResource("Compositor_6n3tf")
@@ -69,7 +83,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.0765095)
 current = true
 
 [node name="Icosphere" type="MeshInstance3D" parent="." unique_id=1685822941]
-transform = Transform3D(0.7387323, -0.04979035, -0.6721571, 0.6453522, 0.33990598, 0.6840937, 0.19440898, -0.93914044, 0.28323182, 0, 0, 0)
+transform = Transform3D(0.33858737, -0.94093466, 0.0006252579, 0.0053006513, 0.0025718906, 0.9999824, -0.9409199, -0.3385782, 0.0058583766, 0, 0, 0)
 layers = 3
 mesh = SubResource("ArrayMesh_41vdm")
 
@@ -77,3 +91,7 @@ mesh = SubResource("ArrayMesh_41vdm")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012141943, 1.1920929e-07, -0.0037460327)
 material_override = SubResource("StandardMaterial3D_0xm2m")
 mesh = SubResource("BoxMesh_6n3tf")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=2115697313]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 1, 0, 2)
+mesh = SubResource("PlaneMesh_6n3tf")

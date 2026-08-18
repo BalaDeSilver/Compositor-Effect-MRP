@@ -74,19 +74,24 @@ func initialize_cs() -> void:
 	#print("Pipeline got successfully.")
 	
 	if scene_root:
-		for i in 4:
-			prev_tex[i].clear()
+		for four_index in 4:
+			prev_tex[four_index].clear()
 			
-			aux_viewports[i] = scene_root.get_node_or_null(str(hash_array[i].hash()))
-			if not aux_viewports[i]:
-				aux_viewports[i] = aux_scene.instantiate()
-				aux_viewports[i].name = str(hash_array[i].hash())
-				scene_root.add_child(aux_viewports[i])
-				#aux_viewports[i].owner = self
+			aux_viewports[four_index] = scene_root.get_node_or_null(str(hash_array[four_index].hash()))
+			if not aux_viewports[four_index]:
+				aux_viewports[four_index] = aux_scene.instantiate()
+				aux_viewports[four_index].name = str(hash_array[four_index].hash())
+				if Engine.is_editor_hint():
+					aux_viewports[four_index].target_viewport = EditorInterface.get_editor_viewport_3d(four_index)
+				else:
+					aux_viewports[four_index].target_viewport = scene_root.get_viewport()
+				aux_viewports[four_index].target_camera = aux_viewports[four_index].target_viewport.get_camera_3d()
+				scene_root.add_child(aux_viewports[four_index])
+				#aux_viewports[four_index].owner = scene_root
 			
-			aux_viewports[i].get_camera_3d().visible = false
-			aux_viewports[i].get_camera_3d().compositor.compositor_effects[0].number = i
-			aux_viewports[i].get_camera_3d().compositor.compositor_effects[0].main_shader_ref = self
+			aux_viewports[four_index].get_camera_3d().visible = false
+			aux_viewports[four_index].get_camera_3d().compositor.compositor_effects[0].number = four_index
+			aux_viewports[four_index].get_camera_3d().compositor.compositor_effects[0].main_shader_ref = self
 
 
 func _init() -> void:
@@ -114,31 +119,6 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 	if not scene_root or not rd or not shader or not main_pipeline or not aux_viewports[0]:
 		initialize_cs()
 		return
-		
-	for i in 4:
-		var current_camera: Camera3D = aux_viewports[i].get_camera_3d()
-		
-		if Engine.is_editor_hint():
-			var editor_viewport: SubViewport = EditorInterface.get_editor_viewport_3d(i)
-			var editor_camera: Camera3D = editor_viewport.get_camera_3d()
-			
-			current_camera.transform = editor_camera.transform
-			current_camera.transform.origin += current_camera.basis.z * 0.0001
-			current_camera.fov = editor_camera.fov
-			current_camera.near = editor_camera.near
-			current_camera.far = editor_camera.far
-			
-			aux_viewports[i].size = editor_viewport.size
-		else:
-			var game_viewport: Viewport = Engine.get_main_loop().current_scene.get_viewport()
-			var game_camera: Camera3D = game_viewport.get_camera_3d()
-			
-			current_camera.transform = game_camera.transform
-			current_camera.fov = game_camera.fov
-			current_camera.near = game_camera.near
-			current_camera.far = game_camera.far
-			
-			aux_viewports[i].size = game_viewport.size
 	
 	if mask_tex[0].size() < 1 or not mask_tex[0][0].is_valid():
 		return

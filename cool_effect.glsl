@@ -27,12 +27,13 @@ void main() {
     float maskdepth = texture(mask_depth, uv / size).r;
     float depth = texture(depth_tex, uv / size).r;
 
-    vec4 color = mix(screen, prev, min(mask.a, float(bool(depth < maskdepth))));
+    vec4 color = mix(screen, prev, min(mask.a, float(depth < maskdepth)));
 
 
     if(!any(isnan(color)))
     {
-        imageStore(screen_tex, uv, vec4(vec3(min(mask.a, float(bool(depth < maskdepth)))), 1.0));
+        imageStore(screen_tex, uv, vec4(vec3(step(depth, maskdepth)), 1.0));
+        //imageStore(screen_tex, uv, color);
         imageStore(prev_tex, uv, color);
     }
 }
