@@ -10,6 +10,12 @@ var scene_buffers: RenderSceneBuffersRD
 var number: int = 0
 var started: bool = false
 
+#var aux_camera: Camera3D
+#var aux_viewport: Viewport
+#
+#var target_viewport: Viewport
+#var target_camera: Camera3D
+
 var main_shader_ref: CompositorEffect
 
 func _notification(what: int) -> void:
@@ -46,6 +52,17 @@ func _init() -> void:
 func _render_callback(_effect_callback_type: int, render_data: RenderData) -> void:
 	if not main_shader_ref:
 		return
+	
+	#if not target_camera:
+		#return
+		##print(target_camera)
+	#aux_camera.transform = target_camera.transform
+	#aux_camera.transform.origin += aux_camera.basis.z * 0.0001
+	#aux_camera.fov = target_camera.fov
+	#aux_camera.near = target_camera.near
+	#aux_camera.far = target_camera.far
+	#
+	#aux_viewport.size = target_viewport.size
 	
 	scene_buffers = render_data.get_render_scene_buffers()
 	

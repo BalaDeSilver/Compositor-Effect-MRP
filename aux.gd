@@ -6,6 +6,13 @@ class_name AuxViewport extends SubViewport
 var target_viewport: Viewport
 var target_camera: Camera3D
 
+#func _ready() -> void:
+	#var compositor: AuxEffect = aux_camera.compositor.compositor_effects[0]
+	#compositor.aux_camera = aux_camera
+	#compositor.target_viewport = target_viewport
+	#compositor.target_camera = target_camera
+	#compositor.aux_viewport = self
+
 func _process(_delta: float) -> void:
 	if target_camera:
 		#print(target_camera)

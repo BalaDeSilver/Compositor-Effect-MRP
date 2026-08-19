@@ -123,7 +123,7 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 	if mask_tex[0].size() < 1 or not mask_tex[0][0].is_valid():
 		return
 	
-	if aux_viewports.size() > 0 and mask_tex and depth_tex:
+	if aux_viewports.size() > 0 and mask_tex[0] and depth_tex[0]:
 		var masktex: RID
 		var maskdepth: RID
 		var prevtex: RID
@@ -149,12 +149,17 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		var view_count = scene_buffers.get_view_count()
 		
 		for view in view_count:
-			var screentex: RID = scene_buffers.get_color_layer(view)
-			var motiontex: RID = scene_buffers.get_velocity_layer(view)
-			var depthex: RID = scene_buffers.get_depth_layer(view)
+			var screentex: RID
+			var motiontex: RID
+			var depthex: RID
 			
 			var render_target: RID = render_data.get_render_scene_buffers().get_render_target()
-			for index in range(4):
+			
+			for index in 4:
+				screentex = scene_buffers.get_color_layer(view)
+				motiontex = scene_buffers.get_velocity_layer(view)
+				depthex = scene_buffers.get_depth_layer(view)
+				
 				prev_tex[index].resize(view_count)
 				
 				if not prev_tex[index][view]:
@@ -173,6 +178,7 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 					maskdepth = depth_tex[index][view]
 					prevtex = prev_tex[index][view]
 					break
+			
 			if not masktex.is_valid() or not maskdepth.is_valid() or not prevtex.is_valid():
 				print("Invalid texture")
 				return

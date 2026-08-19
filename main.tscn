@@ -16,7 +16,7 @@ background_mode = 2
 sky = SubResource("Sky_ig7tw")
 glow_enabled = true
 
-[sub_resource type="CompositorEffect" id="CompositorEffect_g1uo8"]
+[sub_resource type="CompositorEffect" id="CompositorEffect_7vi7f"]
 resource_local_to_scene = false
 resource_name = ""
 enabled = true
@@ -27,7 +27,7 @@ script = ExtResource("1_lquwl")
 metadata/_custom_type_script = "uid://dcdqpw2amf3yq"
 
 [sub_resource type="Compositor" id="Compositor_6n3tf"]
-compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_g1uo8")])
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_7vi7f")])
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_24m5n"]
 
@@ -80,11 +80,12 @@ script = ExtResource("2_h2yge")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1531328096]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.0765095)
+visible = false
 current = true
 
 [node name="Icosphere" type="MeshInstance3D" parent="." unique_id=1685822941]
-transform = Transform3D(0.33858737, -0.94093466, 0.0006252579, 0.0053006513, 0.0025718906, 0.9999824, -0.9409199, -0.3385782, 0.0058583766, 0, 0, 0)
-layers = 3
+transform = Transform3D(0.83679456, 0.54748416, -0.0059730774, -0.0037189962, -0.0052255723, -0.9999792, -0.54750407, 0.83679956, -0.0023366392, 0, 0, 0)
+layers = 2
 mesh = SubResource("ArrayMesh_41vdm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=685492622]
