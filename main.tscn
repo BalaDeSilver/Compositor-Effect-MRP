@@ -16,7 +16,7 @@ background_mode = 2
 sky = SubResource("Sky_ig7tw")
 glow_enabled = true
 
-[sub_resource type="CompositorEffect" id="CompositorEffect_7vi7f"]
+[sub_resource type="CompositorEffect" id="CompositorEffect_g1uo8"]
 resource_local_to_scene = false
 resource_name = ""
 enabled = true
@@ -27,7 +27,7 @@ script = ExtResource("1_lquwl")
 metadata/_custom_type_script = "uid://dcdqpw2amf3yq"
 
 [sub_resource type="Compositor" id="Compositor_6n3tf"]
-compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_7vi7f")])
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_g1uo8")])
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_24m5n"]
 
@@ -71,6 +71,9 @@ material = SubResource("StandardMaterial3D_40rcy")
 flip_faces = true
 size = Vector3(20, 20, 20)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
+albedo_texture = ExtResource("1_ig7tw")
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_6n3tf"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" unique_id=2073219255]
@@ -84,7 +87,7 @@ visible = false
 current = true
 
 [node name="Icosphere" type="MeshInstance3D" parent="." unique_id=1685822941]
-transform = Transform3D(0.83679456, 0.54748416, -0.0059730774, -0.0037189962, -0.0052255723, -0.9999792, -0.54750407, 0.83679956, -0.0023366392, 0, 0, 0)
+transform = Transform3D(0.018192643, 0.7201528, -0.69357646, 0.21752644, -0.6799255, -0.70027345, -0.9758845, -0.1381314, -0.16902202, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_41vdm")
 
@@ -95,4 +98,5 @@ mesh = SubResource("BoxMesh_6n3tf")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=2115697313]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 1, 0, 2)
+material_override = SubResource("StandardMaterial3D_h2yge")
 mesh = SubResource("PlaneMesh_6n3tf")

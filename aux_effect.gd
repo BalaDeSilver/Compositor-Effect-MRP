@@ -10,11 +10,11 @@ var scene_buffers: RenderSceneBuffersRD
 var number: int = 0
 var started: bool = false
 
-#var aux_camera: Camera3D
-#var aux_viewport: Viewport
-#
-#var target_viewport: Viewport
-#var target_camera: Camera3D
+var aux_camera: Camera3D
+var aux_viewport: Viewport
+
+var target_viewport: Viewport
+var target_camera: Camera3D
 
 var main_shader_ref: CompositorEffect
 
@@ -54,10 +54,10 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		return
 	
 	#if not target_camera:
-		#return
 		##print(target_camera)
+		#return
 	#aux_camera.transform = target_camera.transform
-	#aux_camera.transform.origin += aux_camera.basis.z * 0.0001
+	##aux_camera.transform.origin += aux_camera.basis.z * 0.0001
 	#aux_camera.fov = target_camera.fov
 	#aux_camera.near = target_camera.near
 	#aux_camera.far = target_camera.far
@@ -80,8 +80,5 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 	main_shader_ref.depth_tex[number].resize(scene_buffers.get_view_count())
 	
 	for view in scene_buffers.get_view_count():
-		var aux: RID = scene_buffers.get_color_layer(view)
-		var depth: RID = scene_buffers.get_depth_layer(view)
-		
-		main_shader_ref.mask_tex[number][view] = aux
-		main_shader_ref.depth_tex[number][view] = depth
+		main_shader_ref.mask_tex[number][view] = scene_buffers.get_color_layer(view)
+		main_shader_ref.depth_tex[number][view] = scene_buffers.get_depth_layer(view)

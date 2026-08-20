@@ -165,18 +165,31 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 				if not prev_tex[index][view]:
 					prev_tex[index][view] = rd.texture_create(fmt, RDTextureView.new(), [])
 				
-				var viewport: Viewport
+				var target_viewport: Viewport
 				if Engine.is_editor_hint():
-					viewport = EditorInterface.get_editor_viewport_3d(index)
+					target_viewport = EditorInterface.get_editor_viewport_3d(index)
 				else:
-					viewport = scene_root.get_viewport()
-				var viewport_RID: RID = viewport.get_viewport_rid()
+					target_viewport = scene_root.get_viewport()
+				var viewport_RID: RID = target_viewport.get_viewport_rid()
 				var viewport_render_target_RID: RID = RenderingServer.viewport_get_render_target(viewport_RID)
 				
 				if render_target == viewport_render_target_RID:
 					masktex = mask_tex[index][view]
 					maskdepth = depth_tex[index][view]
 					prevtex = prev_tex[index][view]
+					
+					var aux_viewport = aux_viewports[index]
+					var aux_camera = aux_viewport.get_camera_3d()
+					var target_camera = target_viewport.get_camera_3d()
+					
+					aux_camera.transform = target_camera.transform
+					#aux_camera.transform.origin += aux_camera.basis.z * 0.0001
+					aux_camera.fov = target_camera.fov
+					aux_camera.near = target_camera.near
+					aux_camera.far = target_camera.far
+					
+					aux_viewport.size = target_viewport.size
+					
 					break
 			
 			if not masktex.is_valid() or not maskdepth.is_valid() or not prevtex.is_valid():
@@ -218,8 +231,10 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 			var image_uniform_set: RID
 			image_uniform_set = UniformSetCacheRD.get_cache(shader, 0, [uniform_screen, uniform_mask, uniform_maskdepth, uniform_prev, uniform_motion, uniform_depth])
 			
-			var compute_list: int = rd.compute_list_begin()
+			if not masktex or not masktex.is_valid():
+				return
 			
+			var compute_list: int = rd.compute_list_begin()
 			rd.compute_list_bind_compute_pipeline(compute_list, main_pipeline)
 			rd.compute_list_bind_uniform_set(compute_list, image_uniform_set, 0)
 			rd.compute_list_set_push_constant(compute_list, push_constants.to_byte_array(), push_constants.size() * 4)
