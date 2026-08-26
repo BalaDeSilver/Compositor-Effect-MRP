@@ -48,11 +48,13 @@ func _notification(what: int) -> void:
 
 
 func initialize_cs() -> void:
-	aux_viewports.resize(4)
-	mask_tex.resize(4)
-	depth_tex.resize(4)
-	prev_tex.resize(4)
-	size.resize(4)
+	var editor: int = lerp(1, 4, Engine.is_editor_hint())
+	
+	aux_viewports.resize(editor)
+	mask_tex.resize(editor)
+	depth_tex.resize(editor)
+	prev_tex.resize(editor)
+	size.resize(editor)
 	
 	if Engine.is_editor_hint():
 		scene_root = editor_interface.get_edited_scene_root()
@@ -79,7 +81,7 @@ func initialize_cs() -> void:
 	#print("Pipeline got successfully.")
 	
 	if scene_root:
-		for four_index in 4:
+		for four_index in editor:
 			prev_tex[four_index].clear()
 			
 			aux_viewports[four_index] = scene_root.get_node_or_null(str(hash_array[four_index].hash()))
@@ -121,8 +123,7 @@ func _init() -> void:
 
 
 func _render_callback(_effect_callback_type: int, render_data: RenderData) -> void:
-	if not scene_root or not rd or not shader or not main_pipeline or not aux_viewports[0]\
-	 		or not aux_viewports[1] or not aux_viewports[2] or not aux_viewports[3]:
+	if not scene_root or not rd or not shader or not main_pipeline or not aux_viewports[0]:
 		initialize_cs()
 		return
 	

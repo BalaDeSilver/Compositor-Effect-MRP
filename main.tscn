@@ -87,7 +87,7 @@ visible = false
 current = true
 
 [node name="Icosphere" type="MeshInstance3D" parent="." unique_id=1685822941]
-transform = Transform3D(0.7836541, -0.47661233, -0.3984045, 0.06477032, -0.57516253, 0.81547064, -0.61781085, -0.66485184, -0.41985834, 0, 0, 0)
+transform = Transform3D(-0.9741831, -0.22067738, -0.047623783, 0.11743154, -0.31516832, -0.9417421, 0.19281173, -0.9230221, 0.33294627, 0, 0, 0)
 layers = 2
 mesh = SubResource("ArrayMesh_41vdm")
 
