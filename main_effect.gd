@@ -20,6 +20,10 @@ var prev_tex: Array[Array]
 
 var hash_array: Array[StringName] = [&"One", &"Two", &"Three", &"Four"]
 
+static var editor_interface: Object:
+	get:
+		return Engine.get_singleton(&"EditorInterface")
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE and shader:
 		if shader.is_valid():
@@ -51,7 +55,7 @@ func initialize_cs() -> void:
 	size.resize(4)
 	
 	if Engine.is_editor_hint():
-		scene_root = EditorInterface.get_edited_scene_root()
+		scene_root = editor_interface.get_edited_scene_root()
 	else:
 		scene_root = Engine.get_main_loop().current_scene
 	
@@ -83,7 +87,7 @@ func initialize_cs() -> void:
 				aux_viewports[four_index] = aux_scene.instantiate()
 				aux_viewports[four_index].name = str(hash_array[four_index].hash())
 				if Engine.is_editor_hint():
-					aux_viewports[four_index].target_viewport = EditorInterface.get_editor_viewport_3d(four_index)
+					aux_viewports[four_index].target_viewport = editor_interface.get_editor_viewport_3d(four_index)
 				else:
 					aux_viewports[four_index].target_viewport = scene_root.get_viewport()
 				aux_viewports[four_index].target_camera = aux_viewports[four_index].target_viewport.get_camera_3d()
@@ -166,7 +170,7 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 				
 				var target_viewport: Viewport
 				if Engine.is_editor_hint():
-					target_viewport = EditorInterface.get_editor_viewport_3d(index)
+					target_viewport = editor_interface.get_editor_viewport_3d(index)
 				else:
 					target_viewport = scene_root.get_viewport()
 				var viewport_RID: RID = target_viewport.get_viewport_rid()
