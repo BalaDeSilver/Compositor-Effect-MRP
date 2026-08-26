@@ -7,7 +7,7 @@ var main_pipeline: RID
 
 var nearest_sampler: RID
 var fmt: RDTextureFormat
-var size: Vector2i = Vector2i(1920, 1080)
+var size: Array[Vector2i] = [Vector2i(1920, 1080)]
 
 var aux_scene: PackedScene = preload("res://aux.tscn")
 var aux_viewports: Array[AuxViewport]
@@ -48,6 +48,7 @@ func initialize_cs() -> void:
 	mask_tex.resize(4)
 	depth_tex.resize(4)
 	prev_tex.resize(4)
+	size.resize(4)
 	
 	if Engine.is_editor_hint():
 		scene_root = EditorInterface.get_edited_scene_root()
@@ -105,8 +106,8 @@ func _init() -> void:
 	nearest_sampler = rd.sampler_create(sampler_state)
 	
 	fmt = RDTextureFormat.new()
-	fmt.width = size.x
-	fmt.height = size.y
+	fmt.width = size[0].x
+	fmt.height = size[0].y
 	fmt.format = RenderingDevice.DATA_FORMAT_R16G16B16A16_SFLOAT
 	fmt.usage_bits = RenderingDevice.TEXTURE_USAGE_CAN_UPDATE_BIT \
 					| RenderingDevice.TEXTURE_USAGE_STORAGE_BIT \
@@ -116,7 +117,8 @@ func _init() -> void:
 
 
 func _render_callback(_effect_callback_type: int, render_data: RenderData) -> void:
-	if not scene_root or not rd or not shader or not main_pipeline or not aux_viewports[0]:
+	if not scene_root or not rd or not shader or not main_pipeline or not aux_viewports[0]\
+	 		or not aux_viewports[1] or not aux_viewports[2] or not aux_viewports[3]:
 		initialize_cs()
 		return
 	
@@ -131,24 +133,21 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 		var scene_buffers: RenderSceneBuffersRD = render_data.get_render_scene_buffers()
 		if not scene_buffers: return
 		
-		size = scene_buffers.get_internal_size()
-		if size.x == 0 or size.y == 0: return
-		fmt.width = size.x
-		fmt.height = size.y
+		var old_size: Array[Vector2i]
+		old_size.resize(4)
 		
-		@warning_ignore_start("integer_division")
-		var x_groups: int = (size.x - 1) / 16 + 1
-		var y_groups: int = (size.y - 1) / 16 + 1
-		@warning_ignore_restore("integer_division")
-		
-		var push_constants: PackedFloat32Array
-		push_constants.append(size.x)
-		push_constants.append(size.y)
-		push_constants.append(Time.get_ticks_msec())
-		
-		var view_count = scene_buffers.get_view_count()
-		
+		var view_count: int = scene_buffers.get_view_count()
 		for view in view_count:
+			@warning_ignore_start("integer_division")
+			var x_groups: int = (size[view].x - 1) / 16 + 1
+			var y_groups: int = (size[view].y - 1) / 16 + 1
+			@warning_ignore_restore("integer_division")
+			
+			var push_constants: PackedFloat32Array
+			push_constants.append(size[view].x)
+			push_constants.append(size[view].y)
+			push_constants.append(Time.get_ticks_msec())
+			
 			var screentex: RID
 			var motiontex: RID
 			var depthex: RID
@@ -174,6 +173,18 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 				var viewport_render_target_RID: RID = RenderingServer.viewport_get_render_target(viewport_RID)
 				
 				if render_target == viewport_render_target_RID:
+					old_size[index] = size[index]
+					size[index] = scene_buffers.get_internal_size()
+					
+					if size[index].x == 0 or size[index].y == 0: return
+					
+					fmt.width = size[index].x
+					fmt.height = size[index].y
+					
+					if old_size[index] != size[index]:
+						rd.free_rid(prev_tex[index][view])
+						prev_tex[index][view] = rd.texture_create(fmt, RDTextureView.new(), [])
+					
 					masktex = mask_tex[index][view]
 					maskdepth = depth_tex[index][view]
 					prevtex = prev_tex[index][view]
@@ -191,10 +202,6 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 					aux_viewport.size = target_viewport.size
 					
 					break
-			
-			if not masktex.is_valid() or not maskdepth.is_valid() or not prevtex.is_valid():
-				print("Invalid texture")
-				return
 			
 			var uniform_screen: RDUniform = RDUniform.new()
 			uniform_screen.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
@@ -231,7 +238,9 @@ func _render_callback(_effect_callback_type: int, render_data: RenderData) -> vo
 			var image_uniform_set: RID
 			image_uniform_set = UniformSetCacheRD.get_cache(shader, 0, [uniform_screen, uniform_mask, uniform_maskdepth, uniform_prev, uniform_motion, uniform_depth])
 			
-			if not masktex or not masktex.is_valid():
+			if not masktex or not maskdepth or not prevtex\
+					or not masktex.is_valid() or not maskdepth.is_valid() or not prevtex.is_valid():
+				print("Invalid texture")
 				return
 			
 			var compute_list: int = rd.compute_list_begin()

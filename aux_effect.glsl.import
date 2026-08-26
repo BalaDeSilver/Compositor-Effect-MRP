@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bmarxla5abxhi"
+path="res://.godot/imported/aux_effect.glsl-77acc74d65fdc280af78ce911f6c5f65.res"
+
+[deps]
+
+source_file="res://aux_effect.glsl"
+dest_files=["res://.godot/imported/aux_effect.glsl-77acc74d65fdc280af78ce911f6c5f65.res"]
+
+[params]
+
